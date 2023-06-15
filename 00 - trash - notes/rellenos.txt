@@ -1,0 +1,100 @@
+{
+    "name": "White Shirt Men",
+    "featureImg": "img url",
+    "galleryImg": [],
+    "description": "White shirt for men",
+    "descriptionL": "Elegant white shirt for men",
+    "price": 30,
+    "stock": {
+        "S": 10,
+        "M": 10,
+        "L": 10,
+        "XL": 10
+    },
+    "category": [
+        "men"
+    ]
+}
+
+
+
+{
+    "username": "TheAdmin",
+    "password": "luggage"
+}
+
+{
+    "username": "TheAdmin",
+    "passwordHash": "$2b$10$5BB5DWgD6l/d/RUy4koe.OIZf43SwnOXaYs3edVI8EhX..hvMaTQq",
+    "id": "6489ecb5353c8e97c4e16b0d"
+}
+
+
+{
+    "name": "White Shirt Men",
+    "featureImg": "img url",
+    "galleryImg": [],
+    "description": "White shirt for men",
+    "descriptionL": "Elegant white shirt for men",
+    "price": 30,
+    "stock": {
+        "S": 10,
+        "M": 10,
+        "L": 10,
+        "XL": 10
+    },
+    "category": [
+        "men"
+    ],
+    "adminId": "6489ecb5353c8e97c4e16b0d"
+}
+
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRoZUFkbWluIiwiaWQiOiI2NDg5ZWNiNTM1M2M4ZTk3YzRlMTZiMGQiLCJpYXQiOjE2ODY3NjQ1MDZ9.hqYTfVe9ju7dAzmJUvXj6mojzZYcTko-on6ePQGTqqw",
+    "username": "TheAdmin"
+}
+
+
+{
+    "username":"AdminUser",
+    "password":"Lugagge",
+    "email":"email@email.com",
+    "phone":"123456",
+    "address":"calle 123",
+    "role": 1
+}
+
+{
+    "username": "AdminUser",
+    "passwordHash": "$2b$10$KXb76t1sUz8rLDvAPn36ReyQ0ZgCSytNWSPJUm9qL9i/ytWrvmZei",
+    "email": "email@email.com",
+    "phone": "123456",
+    "address": "calle 123",
+    "role": 1,
+    "createdAt": "2023-06-14T19:38:26.710Z",
+    "updatedAt": "2023-06-14T19:38:26.710Z",
+    "id": "648a1732ce57fa564b862568"
+}
+
+
+
+{
+    "username":"UserUser",
+    "password":"Lugagge2",
+    "email":"email@email.com",
+    "phone":"123456",
+    "address":"calle 123"
+}
+
+{
+    "username": "UserUser",
+    "passwordHash": "$2b$10$gIzi.Rq9RMwTsBT4HgR6j.P7P7dKK08tr.GYTQFLCBplKUgOixLLS",
+    "email": "email@email.com",
+    "phone": "123456",
+    "address": "calle 123",
+    "role": 0,
+    "createdAt": "2023-06-14T19:39:02.631Z",
+    "updatedAt": "2023-06-14T19:39:02.631Z",
+    "id": "648a1756ce57fa564b86256f"
+}
