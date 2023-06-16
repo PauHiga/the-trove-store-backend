@@ -7,8 +7,10 @@ const productsRouter = require('./controllers/products')
 const userRouter = require('./controllers/user')
 const loginRouter = require('./controllers/login')
 const morgan = require('morgan');
+const cors = require('cors')
 
 const app = express()
+app.use(cors())
 
 app.use(morgan('combined'));
 mongoose.set('strictQuery', false)
