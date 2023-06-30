@@ -10,36 +10,36 @@ const productSchema = new mongoose.Schema({
       type: String,
       required: true
     },
-    galleryImg: {
-      type: [String],
-      required: false
-    },
     description: {
       type: String,
       required: true
-    },
-    descriptionL: {
-      type: String,
-      required: false
     },
     price: {
       type: Number,
       required: true
     },
     stock: {
-      type: Schema.Types.Mixed,
+      type: Schema.Types.Mixed, 
       required: false
     },
-    category: {
-      type: [String],
+    section: {
+      type: String,
       required: true
     },
+    category: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category'
+      }
+    ],
     discount: {
       type: Number,
       required: true,
       default: 0
     }
 })
+
+productSchema.path('category').default([]);
 
 productSchema.set('toJSON', {
     transform: (document, returnedObject) => {

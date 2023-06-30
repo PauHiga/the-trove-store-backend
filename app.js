@@ -6,6 +6,7 @@ const logger = require('./utils/logger')
 const productsRouter = require('./controllers/products')
 const userRouter = require('./controllers/user')
 const loginRouter = require('./controllers/login')
+const categoriesRouter = require('./controllers/categories')
 const morgan = require('morgan');
 const cors = require('cors')
 
@@ -25,6 +26,7 @@ app.use(middleware.requestLogger)
 app.use('/api/products', productsRouter)
 app.use('/api/user', userRouter)
 app.use('/api/login', loginRouter)
+app.use('/api/categories', categoriesRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)

@@ -31,11 +31,11 @@
 
 
 {
-    "name": "White Shirt Men",
+    "name": "White Skirt Women",
     "featureImg": "img url",
     "galleryImg": [],
-    "description": "White shirt for men",
-    "descriptionL": "Elegant white shirt for men",
+    "description": "White skirt for Women",
+    "descriptionL": "Elegant white skirt for Women",
     "price": 30,
     "stock": {
         "S": 10,
@@ -44,7 +44,7 @@
         "XL": 10
     },
     "category": [
-        "men"
+        "6496268dbbb32abc30477594"
     ],
     "adminId": "6489ecb5353c8e97c4e16b0d"
 }
@@ -97,4 +97,44 @@
     "createdAt": "2023-06-14T19:39:02.631Z",
     "updatedAt": "2023-06-14T19:39:02.631Z",
     "id": "648a1756ce57fa564b86256f"
+}
+
+{
+    "name": "White Skirt Women",
+    "featureImg": "img url",
+    "description": "White skirt for Women",
+    "price": 30,
+    "stock": {
+        "S": 10,
+        "M": 10,
+        "L": 10,
+        "XL": 10
+    },
+    "section": "women",
+    "category": [
+        "649f3df4d179a277d58f4898"
+    ],
+    "discount":0
+}
+
+{
+    "name": "White Skirt Women",
+    "featureImg": "img url",
+    "description": "White skirt for Women",
+    "price": 30,
+    "stock": {
+        "S": 10,
+        "M": 10,
+        "L": 10,
+        "XL": 10
+    },
+    "section": "women",
+    "category": [
+        "649f3df4d179a277d58f4898", "649f3ec71e99139e28e1aa4d"
+    ],
+    "discount":0
+}
+
+{
+    "category": "skirt"
 }

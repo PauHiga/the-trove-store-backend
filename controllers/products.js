@@ -1,4 +1,5 @@
 const productsRouter = require('express').Router()
+const Category = require('../models/categoriesModel')
 const Product = require('../models/productsModel')
 const Admin = require('../models/userModel')
 require('express-async-errors')
@@ -13,7 +14,7 @@ const getTokenFrom = request => {
 }
 
 productsRouter.get('/', async (request, response)=>{
-  const products = await Product.find({})
+  const products = await Product.find({}).populate('category', {category: 1})
   response.json(products)
 })
 
@@ -33,17 +34,20 @@ productsRouter.post('/', async (request, response) => {
   if (!decodedToken.id){
     return response.status(401).json({ error: 'token invalid'})
   }
-    const product = new Product({
-      name: body.name,
-      featureImg: body.featureImg,
-      galleryImg: body.galleryImg,
-      description: body.description,
-      descriptionL: body.descriptionL,
-      price: body.price,
-      stock: body.stock,
-      category: body.category,
-      discount:body.discount,
-    })
+  if (decodedToken.role != 1){
+    return response.status(401).json({ error: 'only admin users can modify this'})
+  }
+
+  const product = new Product({
+    name: body.name,
+    featureImg: body.featureImg,
+    description: body.description,
+    price: body.price,
+    stock: body.stock,
+    section: body.section,
+    category: body.category,
+    discount:body.discount,
+  })
     const savedProduct = await product.save()
     response.json(savedProduct)
 })
@@ -52,6 +56,9 @@ productsRouter.delete('/:id', async (request, response) => {
   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
   if (!decodedToken.id){
     return response.status(401).json({ error: 'token invalid'})
+  }
+  if (decodedToken.role == 0){
+    return response.status(401).json({ error: 'only admin users can modify this'})
   }
     await Product.findByIdAndRemove(request.params.id)
     response.status(204).end()
@@ -63,14 +70,17 @@ productsRouter.put('/:id', async (request, response) => {
   if (!decodedToken.id){
     return response.status(401).json({ error: 'token invalid'})
   }
+  if (decodedToken.role != 1){
+    return response.status(401).json({ error: 'only admin users can modify this'})
+  }
+
     const product = {
       name: body.name,
       featureImg: body.featureImg,
-      galleryImg: body.galleryImg,
       description: body.description,
-      descriptionL: body.descriptionL,
       price: body.price,
       stock: body.stock,
+      section: body.section,
       category: body.category,
       discount:body.discount,
     }
