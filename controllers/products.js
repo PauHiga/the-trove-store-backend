@@ -4,6 +4,7 @@ const Product = require('../models/productsModel')
 const Admin = require('../models/userModel')
 require('express-async-errors')
 const jwt = require('jsonwebtoken')
+const fs = require('fs')
   
 const getTokenFrom = request => {
   const authorization = request.get('Authorization')
@@ -28,8 +29,9 @@ productsRouter.get('/:id', async (request, response) => {
       }
 })
 
-productsRouter.post('/', async (request, response) => {
+productsRouter.post('/', async (request, response) => {  
   const body = request.body
+  console.log(request.body)
   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
   if (!decodedToken.id){
     return response.status(401).json({ error: 'token invalid'})
@@ -48,8 +50,14 @@ productsRouter.post('/', async (request, response) => {
     category: body.category,
     discount:body.discount,
   })
-    const savedProduct = await product.save()
-    response.json(savedProduct)
+
+  console.log(product)
+
+  product.featureImg.data = fs.readFileSync(featureImg.path)
+  product.featureImg.contentType = featureImg.type
+
+  const savedProduct = await product.save()
+  response.json(savedProduct)
 })
 
 productsRouter.delete('/:id', async (request, response) => {

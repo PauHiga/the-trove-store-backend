@@ -9,7 +9,7 @@ const categoriesSchema = new mongoose.Schema({
       unique: true, 
       trim:true
     }
-}, { timestamps: true })
+})
 
 categoriesSchema.plugin(uniqueValidator)
 

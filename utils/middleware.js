@@ -14,7 +14,9 @@ const unknownEndpoint = (request, response) => {
 
 const errorHandler = (error, request, response, next) => {
   logger.error(error.message)
-
+  if (error._message === "User validation failed") {
+    response.status(409).json({ error: "There is another user with this name already!" })
+  } 
   if (error.name === 'CastError') {
     response.status(404).json({ error: 'Product not found' })
   } 
