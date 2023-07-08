@@ -5,6 +5,8 @@ const Admin = require('../models/userModel')
 require('express-async-errors')
 const jwt = require('jsonwebtoken')
 const fs = require('fs')
+const multer  = require('multer')
+const upload = multer({ dest: 'uploads/' });
   
 const getTokenFrom = request => {
   const authorization = request.get('Authorization')
@@ -29,9 +31,13 @@ productsRouter.get('/:id', async (request, response) => {
       }
 })
 
-productsRouter.post('/', async (request, response) => {  
+productsRouter.post('/', upload.single('featureImg'), async (request, response) => {  
   const body = request.body
+  const file = request.file;
+
   console.log(request.body)
+  console.log(file)
+
   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
   if (!decodedToken.id){
     return response.status(401).json({ error: 'token invalid'})
@@ -40,9 +46,11 @@ productsRouter.post('/', async (request, response) => {
     return response.status(401).json({ error: 'only admin users can modify this'})
   }
 
+  const imageBuffer = fs.readFileSync(file.path);
+
   const product = new Product({
     name: body.name,
-    featureImg: body.featureImg,
+    featureImg: imageBuffer,
     description: body.description,
     price: body.price,
     stock: body.stock,
@@ -50,11 +58,6 @@ productsRouter.post('/', async (request, response) => {
     category: body.category,
     discount:body.discount,
   })
-
-  console.log(product)
-
-  product.featureImg.data = fs.readFileSync(featureImg.path)
-  product.featureImg.contentType = featureImg.type
 
   const savedProduct = await product.save()
   response.json(savedProduct)
