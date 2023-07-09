@@ -3,9 +3,13 @@ const Category = require('../models/categoriesModel')
 const Product = require('../models/productsModel')
 const Admin = require('../models/userModel')
 require('express-async-errors')
+const config = require('../utils/config')
 const jwt = require('jsonwebtoken')
 const fs = require('fs')
-  
+const multer = require('multer');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+
 const getTokenFrom = request => {
   const authorization = request.get('Authorization')
   if (authorization && authorization.startsWith('Bearer ')){
@@ -13,6 +17,26 @@ const getTokenFrom = request => {
   }
   return null
 }
+
+cloudinary.config({
+  cloud_name: config.CLOUDINARY_CLOUD,
+  api_key: config.CLOUDINARY_KEY,
+  api_secret: config.CLOUDINARY_SECRET,
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'the_trove_store',
+    allowed_formats: ['jpg', 'png', 'jpeg'],
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 10 * 1024 * 1024 }
+  });
+
 
 productsRouter.get('/', async (request, response)=>{
   const products = await Product.find({}).populate('category', {category: 1})
@@ -29,9 +53,12 @@ productsRouter.get('/:id', async (request, response) => {
       }
 })
 
-productsRouter.post('/', async (request, response) => {  
+productsRouter.post('/', upload.single('featureImg'), async (request, response) => {  
   const body = request.body
-  console.log(request.body)
+  console.log("body", body)
+  const file = request.file;
+  console.log("file", file)
+
   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
   if (!decodedToken.id){
     return response.status(401).json({ error: 'token invalid'})
@@ -40,9 +67,14 @@ productsRouter.post('/', async (request, response) => {
     return response.status(401).json({ error: 'only admin users can modify this'})
   }
 
+  const result = await cloudinary.uploader.upload(file.path, {
+    folder: 'the_trove_store',
+    resource_type: 'auto'
+  });
+
   const product = new Product({
     name: body.name,
-    featureImg: body.featureImg,
+    featureImg: result.secure_url,
     description: body.description,
     price: body.price,
     stock: body.stock,
@@ -52,9 +84,6 @@ productsRouter.post('/', async (request, response) => {
   })
 
   console.log(product)
-
-  product.featureImg.data = fs.readFileSync(featureImg.path)
-  product.featureImg.contentType = featureImg.type
 
   const savedProduct = await product.save()
   response.json(savedProduct)
