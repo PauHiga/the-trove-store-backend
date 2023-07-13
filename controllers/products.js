@@ -37,6 +37,14 @@ const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 }
   });
 
+const handleNoFileError = (req, res, next) => {
+  // If 'featureImg' field is empty or missing, set 'req.file' to null
+  if (!req.file && !req.files && req.body && !req.body.featureImg) {
+    req.file = null;
+  }
+  next();
+};
+
 productsRouter.get('/', async (request, response)=>{
   const products = await Product.find({}).populate('category', {category: 1})
   response.json(products)
@@ -122,7 +130,7 @@ productsRouter.delete('/:id', async (request, response) => {
   response.status(204).end()
 })
 
-productsRouter.put('/:id', upload.single('featureImg'), async (request, response) => {
+productsRouter.put('/:id', upload.single('featureImg'), handleNoFileError, async (request, response) => {
   const body = request.body
   const file = request.file;
 
@@ -135,29 +143,43 @@ productsRouter.put('/:id', upload.single('featureImg'), async (request, response
     return response.status(401).json({ error: 'token invalid'})
   }
   if (decodedToken.role != 1){
-    return response.status(401).json({ error: 'only admin users can modify this'})
-  }
+    // return response.status(401).json({ error: 'only admin users can modify this'})
 
-  const destroyed = await cloudinary.uploader.destroy(body.imagePublicID, {invalidate: true})
+    const stockParsed = JSON.parse(request.body.stock);
+
+    const product = {
+      stock: stockParsed,
+    }
   
-  console.log("destroyed", destroyed)
-
+      const updatedProduct = await Product.findByIdAndUpdate(request.params.id, product, { new: true, runValidators: true, context: 'query' })
+      response.json(updatedProduct)
+  }
+  
+  
   if (!body.category){
     body.category = []
   }
-
+  
   const stockParsed = JSON.parse(request.body.stock);
 
-  const product = {
+  let product = {
     name: body.name,
-    featureImg: file.path,
-    imagePublicID: file.filename,
     description: body.description,
     price: body.price,
     stock: stockParsed,
     section: body.section,
     category: body.category,
     discount:body.discount,
+  }
+  
+  if (file){
+    const destroyed = await cloudinary.uploader.destroy(body.imagePublicID, {invalidate: true})
+    console.log("destroyed", destroyed)
+    product = {
+      ...product, 
+      featureImg: file.path,
+      imagePublicID: file.filename,
+    }
   }
 
     const updatedProduct = await Product.findByIdAndUpdate(request.params.id, product, { new: true, runValidators: true, context: 'query' })
