@@ -38,7 +38,6 @@ const upload = multer({
   });
 
 const handleNoFileError = (req, res, next) => {
-  // If 'featureImg' field is empty or missing, set 'req.file' to null
   if (!req.file && !req.files && req.body && !req.body.featureImg) {
     req.file = null;
   }
@@ -75,13 +74,6 @@ productsRouter.post('/', upload.single('featureImg'), async (request, response) 
   if (decodedToken.role != 1){
     return response.status(401).json({ error: 'only admin users can modify this'})
   }
-
-  // const result = await cloudinary.uploader.upload(file.path, {
-  //   folder: 'the_trove_store',
-  //   resource_type: 'auto'
-  // });
-  
-  // console.log('result', result)
 
   const stockParsed = JSON.parse(request.body.stock);
   
@@ -124,8 +116,6 @@ productsRouter.delete('/:id', async (request, response) => {
   
   console.log("destroyed", destroyed)
 
-  // await cloudinary.uploader.destroy(publicId, {invalidate: true});
-
   await Product.findByIdAndRemove(request.params.id)
   response.status(204).end()
 })
@@ -143,8 +133,6 @@ productsRouter.put('/:id', upload.single('featureImg'), handleNoFileError, async
     return response.status(401).json({ error: 'token invalid'})
   }
   if (decodedToken.role != 1){
-    // return response.status(401).json({ error: 'only admin users can modify this'})
-
     const stockParsed = JSON.parse(request.body.stock);
 
     const product = {
