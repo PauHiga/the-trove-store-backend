@@ -8,6 +8,7 @@ const userRouter = require('./controllers/user')
 const loginRouter = require('./controllers/login')
 const ordersRouter = require('./controllers/orders')
 const categoriesRouter = require('./controllers/categories')
+const testingRouter = require('./controllers/testing')
 const morgan = require('morgan');
 const cors = require('cors')
 
@@ -29,6 +30,11 @@ app.use('/api/user', userRouter)
 app.use('/api/login', loginRouter)
 app.use('/api/categories', categoriesRouter)
 app.use('/api/orders', ordersRouter)
+
+if (process.env.NODE_ENV === 'test') {
+  const testingRouter = require('./controllers/testing')
+  app.use('/api/testing', testingRouter)
+}
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)

@@ -27,7 +27,7 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: 'the_trove_store',
+    folder: config.CLOUDINARY_FOLDER,
     allowed_formats: ['jpg', 'png', 'jpeg'],
   },
 });
