@@ -2,7 +2,7 @@
 
 E-commerce web application project "The Trove Store". 
 
-Frontend Repository: [https://github.com/PauHiga/the-trove-store-frontend](https://github.com/PauHiga/the-trove-store-frontend)
+Frontend Repository: [https://github.com/PauHiga/the-trove-store-frontend](https://github.com/PauHiga/the-trove-store-frontend)   
 Backend Repository: [https://github.com/PauHiga/the-trove-store-backend](https://github.com/PauHiga/the-trove-store-backend)
 
 ## Technologies Used
