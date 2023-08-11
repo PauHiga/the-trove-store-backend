@@ -16,7 +16,6 @@ categoriesSchema.plugin(uniqueValidator)
 categoriesSchema.set('toJSON', {
     transform: (document, returnedObject) => {
         if(returnedObject._id){
-          console.log("returnedObject", returnedObject)
           returnedObject.id = returnedObject._id.toString()
           delete returnedObject._id
           delete returnedObject.__v

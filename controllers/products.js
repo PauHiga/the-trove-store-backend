@@ -65,7 +65,6 @@ productsRouter.post('/', upload.single('featureImg'), async (request, response) 
   const body = request.body
   const file = request.file;
   
-  console.log('file', file)
 
   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
   if (!decodedToken.id){
@@ -93,7 +92,6 @@ productsRouter.post('/', upload.single('featureImg'), async (request, response) 
     discount:body.discount,
   })
 
-  console.log(product)
 
   const savedProduct = await product.save()
   response.json(savedProduct)
@@ -110,11 +108,9 @@ productsRouter.delete('/:id', async (request, response) => {
 
   const productToDelete = await Product.findById(request.params.id)
   
-  console.log("productToDelete.imagePublicID", productToDelete.imagePublicID)
 
   const destroyed = await cloudinary.uploader.destroy(productToDelete.imagePublicID, {invalidate: true})
   
-  console.log("destroyed", destroyed)
 
   await Product.findByIdAndRemove(request.params.id)
   response.status(204).end()
@@ -123,10 +119,6 @@ productsRouter.delete('/:id', async (request, response) => {
 productsRouter.put('/:id', upload.single('featureImg'), handleNoFileError, async (request, response) => {
   const body = request.body
   const file = request.file;
-
-  console.log('body', body)
-  console.log('body.category', body.category)
-  console.log('file', file)
 
   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
   if (!decodedToken.id){
@@ -162,7 +154,6 @@ productsRouter.put('/:id', upload.single('featureImg'), handleNoFileError, async
   
   if (file){
     const destroyed = await cloudinary.uploader.destroy(body.imagePublicID, {invalidate: true})
-    console.log("destroyed", destroyed)
     product = {
       ...product, 
       featureImg: file.path,

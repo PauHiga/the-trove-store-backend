@@ -5,6 +5,7 @@ const Category = require('../models/categoriesModel')
 const Order = require('../models/ordersModel')
 const config = require('../utils/config')
 var cloudinary = require('cloudinary').v2;
+const logger = require('../utils/logger')
 
 testingRouter.post('/reset', async (request, response) => {
   await Product.deleteMany({})
@@ -12,18 +13,16 @@ testingRouter.post('/reset', async (request, response) => {
   await Category.deleteMany({})
   await Order.deleteMany({})
 
-  const savedProduct = await product.save()
   response.status(204).end()
 })
-
 
 testingRouter.post('/delete-images', async (request, response) => {
   cloudinary.api.delete_resources_by_prefix(`${config.CLOUDINARY_FOLDER}/`).then(()=> {
     cloudinary.api.delete_folder(config.CLOUDINARY_FOLDER, (error, result) => {
       if (error) {
-        console.log('Error:', error);
+        logger.error('Error:', error);
       } else {
-        console.log('Result:', result);
+        logger.info('Result:', result);
       }
     });
   })

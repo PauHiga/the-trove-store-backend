@@ -13,7 +13,13 @@ const morgan = require('morgan');
 const cors = require('cors')
 
 const app = express()
-app.use(cors())
+
+const corsOption = {
+  credentials: true,
+  origin: ['http://localhost:3000', 'http://localhost:80']
+}
+
+app.use(cors(corsOption));
 
 app.use(morgan('combined'));
 mongoose.set('strictQuery', false)

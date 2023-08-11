@@ -35,7 +35,7 @@ userRouter.post('/', async (request, response) => {
     role: savedUser.role,
   }
 
-  // const token = jwt.sign(userForToken, process.env.SECRET, { expiresIn: 60*60 })
+  const token = jwt.sign(userForToken, process.env.SECRET)
 
   response.status(201).send({ token, username: savedUser.username, role: savedUser.role})
 })
