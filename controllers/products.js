@@ -64,7 +64,6 @@ productsRouter.post('/', upload.single('featureImg'), async (request, response) 
 
   const body = request.body
   const file = request.file;
-  
 
   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
   if (!decodedToken.id){
@@ -76,9 +75,15 @@ productsRouter.post('/', upload.single('featureImg'), async (request, response) 
 
   const stockParsed = JSON.parse(request.body.stock);
   
-  if (!body.category){
-    body.category = []
+  let categories = []
+
+  if (body.category){
+    categories = body.category.split(",");
   }
+
+  console.log("body", body)
+  console.log("body.category", body.category)
+  console.log("categories", categories)
 
   const product = new Product({
     name: body.name,
@@ -88,7 +93,7 @@ productsRouter.post('/', upload.single('featureImg'), async (request, response) 
     price: body.price,
     stock: stockParsed,
     section: body.section,
-    category: body.category,
+    category: categories,
     discount:body.discount,
   })
 
@@ -135,9 +140,10 @@ productsRouter.put('/:id', upload.single('featureImg'), handleNoFileError, async
       response.json(updatedProduct)
   }
   
-  
-  if (!body.category){
-    body.category = []
+  let categories = []
+
+  if (body.category){
+    categories = body.category.split(",");
   }
   
   const stockParsed = JSON.parse(request.body.stock);
@@ -148,7 +154,7 @@ productsRouter.put('/:id', upload.single('featureImg'), handleNoFileError, async
     price: body.price,
     stock: stockParsed,
     section: body.section,
-    category: body.category,
+    category: categories,
     discount:body.discount,
   }
   
