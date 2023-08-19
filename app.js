@@ -16,10 +16,11 @@ const app = express()
 
 const corsOption = {
   credentials: true,
-  origin: ['https://the-trove-store.netlify.app']
+  origin: ['https://the-trove-store.netlify.app', 'http://localhost:3000/']
 }
 
-app.use(cors(corsOption));
+app.use(cors());
+// app.use(cors(corsOption));
 
 app.use(morgan('combined'));
 mongoose.set('strictQuery', false)
